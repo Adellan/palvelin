@@ -1,11 +1,15 @@
 package hh.palvelin.bookstore.controllers;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import hh.palvelin.bookstore.model.Book;
 import hh.palvelin.bookstore.model.BookRepository;
@@ -28,6 +32,18 @@ public class BSController {
 		model.addAttribute("books", repo.findAll());
 		return "booklist";
 	}
+	
+	//rest booklist
+	@GetMapping("books")
+	public @ResponseBody List<Book> list(){
+		return (List<Book>) repo.findAll();
+	}
+	
+	//rest find one book
+	@GetMapping("book/{id}")
+    public @ResponseBody Optional<Book> findBook(@PathVariable("id") Long id) {	
+    	return repo.findById(id);
+    } 
 	
 	@GetMapping("add")
     public String addBook(Model model){
