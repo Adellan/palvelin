@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import hh.palvelin.bookstore.model.Book;
 import hh.palvelin.bookstore.model.BookRepository;
+import hh.palvelin.bookstore.model.Category;
 import hh.palvelin.bookstore.model.CategoryRepository;
 
 @Controller
@@ -54,10 +56,17 @@ public class BSController {
     	return repo.findById(id);
     } 
 	
+	//ratkaisi hävinneen listan mysteerin
+	@ModelAttribute("allcats")
+	public Iterable<Category> allcats(){
+		return catrepo.findAll();
+	}
+	
 	@GetMapping("add")
     public String addBook(Model model){
     	model.addAttribute("book", new Book());
-    	model.addAttribute("categorys", catrepo.findAll());
+    	//model.addAttribute("categorys", catrepo.findAll());
+    	model.addAttribute("allcats");
         return "addbook";
     }
 	
@@ -91,7 +100,7 @@ public class BSController {
 	public String editBook(@PathVariable("id") Long id, Model model) {
 		Book book = repo.findById(id).get();
 		model.addAttribute("book", book);
-		model.addAttribute("categorys", catrepo.findAll());
+		model.addAttribute("allcats");
 		return "editbook";
 		
 	}
