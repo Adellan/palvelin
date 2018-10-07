@@ -6,14 +6,21 @@
 </head>
 <body>
 	<h1>Muokkaa kirjaa</h1>
+	<div th:if="${#fields.hasErrors('${book.price}')}">Hinta ei hyväksytty</div>
 	<div>
-		<form th:object="${book}" th:action="@{../save}" action="#" method="post">
+		<form th:object="${book}" th:action="@{../saveEdit}" action="#" method="post">
 		<input type="hidden" th:field="*{id}"/>
 		<input type="text" th:field="*{title}" />
 		<input type="text" th:field="*{author}" />
 		 <select id="catlist" th:field="*{category}">
-      			<option th:each="category: ${categorys}" th:value="${category.categoryid}" th:text="${category.name}"></option>
+      			<option th:each="category: ${categorys}" 
+      			th:value="${category.categoryid}" th:text="${category.name}"></option>
    		</select>
+   		<input type="number" th:field="*{year}" />
+		<input type="text" th:field="*{isbn}" />
+		<input type="text" th:field="*{price}" />
+		
+		
 		<input type="submit" value="Tallenna"></input>
 		</form>
 	</div>

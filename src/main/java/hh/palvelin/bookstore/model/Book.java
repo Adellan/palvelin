@@ -6,6 +6,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.format.annotation.NumberFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -15,10 +18,15 @@ public class Book {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 	
+	@NotNull
 	private String title;
+	
+	@NotNull
 	private String author;
+	
 	private int year;
 	private String isbn;
+	@NumberFormat(pattern="#0.00")
 	private double price;
 	
 	@ManyToOne

@@ -3,12 +3,16 @@ package hh.palvelin.bookstore.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import hh.palvelin.bookstore.model.Book;
@@ -22,6 +26,11 @@ public class BSController {
 	@Autowired
 	private CategoryRepository catrepo;
 
+	@RequestMapping("/login")
+	public String login() {
+		return "login";
+	}
+	
 	@GetMapping("index")
 	public String etusivu() {
 		return "index";
@@ -52,16 +61,22 @@ public class BSController {
         return "addbook";
     }
 	
-	@PostMapping("save")
-    public String save(Book book){
-        /*
-		if(book.getId() != null) {
-        	book.setId(book.getId());
-        	repo.save(book);
-        } else {
-        	repo.save(book);
+	
+	@PostMapping("saveAdd")
+    public String saveAdd(@Valid Book book, BindingResult bindingResult){	
+		if (bindingResult.hasErrors()) {
+            return "addbook";
         }
-        */
+		repo.save(book);
+        return "redirect:booklist";
+
+    }
+	
+	@PostMapping("saveEdit")
+    public String saveEdit(@Valid Book book, BindingResult bindingResult){	
+		if (bindingResult.hasErrors()) {			
+            return "editbook";
+        }
 		repo.save(book);
         return "redirect:booklist";
     }
